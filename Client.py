@@ -103,6 +103,7 @@ class Client(slixmpp.ClientXMPP):
             
         def closeSesion():
             self.disconnect()
+            loginloop = False
             print("Ha cerrado sesion exitosamente")
             
         def delete():
@@ -122,79 +123,43 @@ class Client(slixmpp.ClientXMPP):
             
         menu = True
         while menu:
-            print("1. Enviar mensajes directos") 
-            print("2. Mostrar todos los usuarios/contactos y su estado") 
-            print("3. Agregar un usuario a los contactos") 
-            print("4. Mostrar detalles de contacto de un usuario") 
-            print("5. participar en conversaciones grupales")
-            print("6. Definir mensaje de presencia") 
-            print("7. Enviar/recibir notificaciones")
-            print("8. Enviar/recibir archivos")
-            print("9. Eliminar la cuenta del servidor") 
-            print("10. Cerrar sesion") 
-            print("")
-            op_menu = int(input("Que opcion quieres? "))
+            print("1. Show contacts") 
+            print("2. Add user") 
+            print("3. Show contact details of a user") 
+            print("4. Private message") 
+            print("5. Chat room")
+            print("6. Status") 
+            print("7. Files")
+            print("8. Log out") 
+            print("9. Delete account") 
+            print("------")
             
-       
-        
-    async def register(self, iq):
-        self.send_presence()
-        # We get our contacts
-        self.get_roster()
-        
-        resp = self.Iq()
-        resp['type'] = 'set'
-        resp['register']['username'] = self.boundjid.user
-        resp['register']['password'] = self.password
+            options = int(input("Elige una opcion: "))
+            
+            if options == 1:
+                AllUsers()
+            elif options == 2:
+                AddUsers()
+            elif options == 3:
+                user_info()
+            elif options == 4:
+                Privatemessage()  
+            elif options == 5:
+                Groupmessage()
+            elif options == 6:
+                state()
+            elif options == 7:
+                print("faltante")
+                #await self.upload_fileee()
+            elif options == 8:
+                closeSesion()
+            elif options == 9:
+                delete()
+                
+            else:
+                print("Opcion invalida")
 
-        try:
-            await resp.send()
-            logging.info("Account created for %s!" % self.boundjid)
-        except IqError as e:
-            logging.error("Could not register account: %s" %
-                    e.iq['error']['text'])
-            self.disconnect()
-        except IqTimeout:
-            logging.error("No response from server.")
-            self.disconnect()
-                        
-    def Message(self, message):
-        print(str(message["from"]), ":  ", message["body"])
-        
-def register(user, password):
-    client = Client(user, password)
-
-    client.register_plugin("xep_0030")
-    client.register_plugin("xep_0004")
-    client.register_plugin("xep_0199")
-    client.register_plugin("xep_0066")
-    client.register_plugin("xep_0077")
-    client["xep_0077"].force_registration = True
-    client.connect()
-    client.process()
+            await self.get_roster()
+            
+            
     
-loop = True
-while loop:
-    print("""
-            \r-------------------------------
-            \r1. Sign Up
-            \r2. Log In
-            \r3. Exit
-            \r-------------------------------
-
-        """)
-    option = int(input("Choose an option to continue: "))
-    if option == 1:
-        user = input("Username: ")
-        password = input("Password: ")
-        register(user, password)
-
-    elif option == 2:
-        user = input("Username: ")
-        password = input("Password: ")
-        #login(user, password)
-        
-    elif option == 3:
-        loop = False
-    else:
-        print("Invalid option")
