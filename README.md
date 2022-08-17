@@ -10,15 +10,18 @@ It is project 1 of the network course at the Universidad del Valle. The project 
 
 The features of the project are:
 
-- [x] Register
+- [] Register
 - [x] Log in 
 - [x] Log Out 
 - [x] Delete account 
 - [x] Send messages
--  States
-* Add users
-* Show contacts
-* Send group messages
+- [x] States
+- [x] Add users
+- [x] Show contacts
+- [x] Send group messages
+- [ ] Send/receive notifications
+- [ ] Receive messages
+
 
 To run the project:
 Download this repository
