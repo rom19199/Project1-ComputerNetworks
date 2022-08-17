@@ -1,3 +1,4 @@
+#Imports
 import logging
 from argparse import ArgumentParser
 import slixmpp 
@@ -7,10 +8,10 @@ from aioconsole import ainput
 
 logging.basicConfig(level=logging.DEBUG, format="%(levelname)-8s %(message)s")
 
-
+#Main class
 class Client(slixmpp.ClientXMPP):
 
-
+    #Init app
     def __init__(self, user, password):
         slixmpp.ClientXMPP.__init__(self, user, password)
         self.user = user
@@ -21,17 +22,20 @@ class Client(slixmpp.ClientXMPP):
         
     async def Start(self, event):
         
+        #Presence
         self.send_presence() 
+        
+        #List of contacts
         await self.get_roster()
         
-        #Show all users
+        #Notifications
         def notification(to, state):
             self.register_plugin("xep_0085")
             message = self.Message()
             message["state"] = state
             message["to"] = to
             message.send()
-            
+        #Show all users   
         def AllUsers():
             print('------ Lista de Contactos ------')
             print()
@@ -53,7 +57,8 @@ class Client(slixmpp.ClientXMPP):
                         print('   - ',res, '(',show,')')
                         if pres['status']:
                             print('       ', pres['status'])
-                            
+                  
+        #AddUsers          
         def AddUsers():
             new_user = input("Ingrese nuevo usuario: ")
             self.send_presence_subscription(pto=new_user)
@@ -61,7 +66,7 @@ class Client(slixmpp.ClientXMPP):
             self.send_message(mto=new_user, mbody=message, mtype="chat", mfrom=self.boundjid.bare)
             print("---- Agregado exitosamente ----")
             
-            
+        #Show user info
         def user_info():
             self.get_roster()
 
@@ -83,7 +88,7 @@ class Client(slixmpp.ClientXMPP):
                 print('   - ', res, ' - ', show)
                 print('       ',  pres['status'])
             
-        
+        #Send message
         async def Privatemessage():
             self.register_plugin("xep_0085")
 
@@ -95,6 +100,7 @@ class Client(slixmpp.ClientXMPP):
             notification(recipient, "paused")
             print("Message sent!")
             
+        #Receive message
         async def Groupmessage():
             #self.register_plugin('xep_0030')
             self.register_plugin('xep_0045') #Implements XEP-0045 Multi-User Chat
@@ -106,6 +112,7 @@ class Client(slixmpp.ClientXMPP):
             self.plugin['xep_0045'].join_muc(room, nickname)
             self.send_message(mto=room, mbody=message, mtype='groupchat')
             
+        #Show state
         def state():
             estado = input("Indica el estado que desees (chat, desconectado): ")
             informacion = input("Indica la informacion a mostar: (ej.: disponible, ocupado): ")
@@ -113,12 +120,13 @@ class Client(slixmpp.ClientXMPP):
 
     
         
-            
+        #Close sesion  
         def closeSesion():
             self.disconnect()
            
             print("Ha cerrado sesion exitosamente")
-            
+         
+        #delete   
         def delete():
             self.register_plugin('xep_0030') 
             self.register_plugin('xep_0004')
