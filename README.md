@@ -22,6 +22,7 @@ The features of the project are:
 - [x] Send group messages
 - [ ] Send/receive notifications
 - [x] Chat Room
+- [ ] Send/receive files
 
 
 
