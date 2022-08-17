@@ -25,6 +25,13 @@ class Client(slixmpp.ClientXMPP):
         await self.get_roster()
         
         #Show all users
+        def notification(to, state):
+            self.register_plugin("xep_0085")
+            message = self.Message()
+            message["state"] = state
+            message["to"] = to
+            message.send()
+            
         def AllUsers():
             print('------ Lista de Contactos ------')
             print()
@@ -77,12 +84,12 @@ class Client(slixmpp.ClientXMPP):
                 print('       ',  pres['status'])
             
         
-        def Privatemessage():
+        async def Privatemessage():
             self.register_plugin("xep_0085")
 
-            recipient = input("Recipient: ")
+            recipient = str(await ainput("Recipient: "))
             notification(recipient, "composing")
-            message = input("Message: ")
+            message = str(await ainput("Message: "))
 
             self.send_message(mto=recipient, mbody=message, mtype="chat")
             notification(recipient, "paused")
@@ -105,12 +112,7 @@ class Client(slixmpp.ClientXMPP):
             self.send_presence(pshow=informacion, pstatus=estado)
 
     
-        def notification(to, state):
-            self.register_plugin("xep_0085")
-            message = self.Message()
-            message["state"] = state
-            message["to"] = to
-            message.send()
+        
             
         def closeSesion():
             self.disconnect()
@@ -139,9 +141,10 @@ class Client(slixmpp.ClientXMPP):
             print("4. Private message") 
             print("5. Chat room")
             print("6. Status") 
-            print("7. Files")
+            print("7. Notification")
             print("8. Log out") 
             print("9. Delete account") 
+            
            
             
             options = int(input("Elige una opcion: "))
@@ -153,13 +156,13 @@ class Client(slixmpp.ClientXMPP):
             elif options == 3:
                 user_info()
             elif options == 4:
-                Privatemessage()  
+                await Privatemessage()  
             elif options == 5:
-                Groupmessage()
+                await Groupmessage()
             elif options == 6:
                 state()
             elif options == 7:
-                print("faltante")
+                print("opcion no disponible")
                 #await self.upload_fileee()
             elif options == 8:
                 closeSesion()
@@ -174,9 +177,8 @@ class Client(slixmpp.ClientXMPP):
             
             
     async def register(self, iq):
-        #self.send_presence()
-        #self.get_roster()
-        
+        self.send_presence()
+        self.get_roster()
         resp = self.Iq()
         resp['type'] = 'set'
         resp['register']['username'] = self.boundjid.user
@@ -184,15 +186,12 @@ class Client(slixmpp.ClientXMPP):
 
         try:
             await resp.send()
-            logging.info("Account created for %s!" % self.boundjid)
-        except IqError as e:
-            logging.error("Could not register account: %s" %
-                    e.iq['error']['text'])
+            print("Se ha creado una cuenta")
+        except:
+            print("no se ha podido conectar")
             self.disconnect()
             
-        except IqTimeout:
-            logging.error("No response from server.")
-            self.disconnect()
+        
             
     def Messageto(self, message):
         print(str(message["from"]), ":  ", message["body"])
@@ -216,7 +215,7 @@ class Client(slixmpp.ClientXMPP):
         message.send()
         
     
-def register(username, password):
+def signup(username, password):
     
     
     xmpp = Client(username, password)
@@ -225,8 +224,17 @@ def register(username, password):
     xmpp.register_plugin("xep_0004")
     xmpp.register_plugin("xep_0199")
     xmpp.register_plugin("xep_0066")
-    xmpp.register_plugin("xep_0077")
-    xmpp["xep_0077"].force_registration = True
+    xmpp.register_plugin("xep_0045")
+    xmpp.register_plugin("xep_0085")
+    xmpp.register_plugin("xep_0096")
+    xmpp.register_plugin("xep_0059")
+    xmpp.register_plugin("xep_0060")
+    xmpp.register_plugin("xep_0071")
+    xmpp.register_plugin("xep_0128")
+    xmpp.register_plugin("xep_0363")
+
+
+    #xmpp["xep_0077"].force_registration = True
 
     xmpp.connect()
     xmpp.process()
@@ -252,7 +260,7 @@ while Menu2:
     if opcion == 1:
         user = input("Username: ")
         password = input("Password: ")
-        register(user, password)
+        signup(user, password)
 
     elif opcion == 2:
         user = input("Username: ")
@@ -260,6 +268,6 @@ while Menu2:
         login(user, password)
         
     elif opcion == 3:
-        loop = False
+        Menu2 = False
     else:
         print("Opcion Invalida")
