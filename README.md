@@ -1,4 +1,7 @@
 # Project1-ComputerNetworks
+
+### objectives
+
 Implementation of a client that supports the XMPP protocol
 
 It is project 1 of the network course at the Universidad del Valle. The project consists of implementing a client that supports the XMPP protocol.
