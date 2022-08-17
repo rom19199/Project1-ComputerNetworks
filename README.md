@@ -10,7 +10,7 @@ It is project 1 of the network course at the Universidad del Valle. The project 
 
 The features of the project are:
 
-- [] Register
+- [ ] Register
 - [x] Log in 
 - [x] Log Out 
 - [x] Delete account 
