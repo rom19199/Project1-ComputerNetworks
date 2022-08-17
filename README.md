@@ -5,9 +5,9 @@ It is project 1 of the network course at the Universidad del Valle. The project 
 
 The features of the project are:
 
-* log in /n
-* Log Out /n
-* Delete account /n
+* log in 
+* Log Out 
+* Delete account 
 * Send messages
 * States
 * Add users
