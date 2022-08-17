@@ -5,14 +5,14 @@ It is project 1 of the network course at the Universidad del Valle. The project 
 
 The features of the project are:
 
-log in
-Log Out
-Delete account
-Send messages
-States
-Add users
-Show contacts
-Send group messages
+* log in /n
+* Log Out /n
+* Delete account /n
+* Send messages
+* States
+* Add users
+* Show contacts
+* Send group messages
 
 To run the project:
 Download this repository
