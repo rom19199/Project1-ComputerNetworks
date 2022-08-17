@@ -1,4 +1,4 @@
-# Project1-ComputerNetworks
+# Project1 - ComputerNetworks
 
 ## Objectives
 
@@ -26,9 +26,18 @@ The features of the project are:
 
 
 
-To run the project:
-Download this repository
-Install dependencies: pip install slixmpp
-You should run this project with version 3.7 of python 
-Run Client.py as python Client.py
-For register or login an account use the following: user@alumchat.fun and add the respective password
+## Requirements + How to run the project:
+
+- Download/Clone this repository
+
+- You should run this project with version 3.7 of python 
+
+- Install dependencies: pip3.7 install slixmpp
+
+- Run Client.py as "python Client.py"
+
+- For register or login an account use the following: user@alumchat.fun and add the respective password
+
+## Author
+Hugo Román
+
